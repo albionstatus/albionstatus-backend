@@ -22,7 +22,7 @@ module.exports = async (request, response) => {
     if (typeof timestamp !== "undefined" && !isNaN(Date.parse(timestamp))) {
         const query = "SELECT created_at, status, message, comment FROM" +
             " status WHERE created_at >= ? ORDER BY created_at DESC";
-        connection.query(query, [escape(timestamp)], (err, res) => {
+        connection.query(query, [timestamp], (err, res) => {
             if (err) {
                 console.log(err);
                 send(response, 500, 'Internal Server Error');
