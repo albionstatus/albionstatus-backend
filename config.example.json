@@ -1,0 +1,5 @@
+{
+  "user": "bob",
+  "password": "secret",
+  "database": "whatever"
+}

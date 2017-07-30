@@ -1,0 +1,16 @@
+{
+  "name": "albionstatus-microservice",
+  "version": "0.0.1",
+  "description": "Albion Status MicroService that returns dates from MySQL DB",
+  "main": "index.js",
+  "dependencies": {
+    "micro": "^7.3.3",
+    "mysql": "^2.14.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "micro"
+  },
+  "author": "Developmint GbR - Alexander Lichter",
+  "license": "ISC"
+}
