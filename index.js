@@ -1,5 +1,5 @@
 const {send, json} = require('micro');
-const {createConnection, escape} = require("mysql");
+const {createConnection} = require("mysql");
 const cfg = require("./config.json");
 const connection = createConnection({
     host: 'localhost',
@@ -20,8 +20,8 @@ connection.connect((err) => {
 module.exports = async (request, response) => {
     const timestamp = request.url.split("/?timestamp=")[1];
     if (typeof timestamp !== "undefined" && !isNaN(Date.parse(timestamp))) {
-        const query = "SELECT created_at, status, message, comment FROM" +
-            " status WHERE created_at >= ? ORDER BY created_at DESC";
+        const query = "SELECT created_at, current_status, message, comment" +
+            " FROM status WHERE created_at >= ? ORDER BY created_at DESC";
         connection.query(query, [timestamp], (err, res) => {
             if (err) {
                 console.log(err);
