@@ -1,6 +1,6 @@
 {
   "name": "albionstatus-microservice",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Albion Status MicroService that returns dates from MySQL DB",
   "main": "index.js",
   "repository": {
