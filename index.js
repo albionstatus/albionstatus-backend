@@ -18,7 +18,8 @@ connection.connect((err) => {
 
 
 module.exports = async (request, response) => {
-    const timestamp = request.url.split("/?timestamp=")[1];
+    const timestamp = decodeURI(request.url.split("/?timestamp=")[1]);
+    console.log(timestamp, Date.parse(timestamp));
     if (typeof timestamp !== "undefined" && !isNaN(Date.parse(timestamp))) {
         const query = "SELECT created_at, current_status, message, comment" +
             " FROM status WHERE created_at >= ? ORDER BY created_at DESC";
