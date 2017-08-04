@@ -1,13 +1,17 @@
 const {send, json} = require('micro');
 const {createConnection} = require("mysql");
 const cfg = require("./config.json");
+const microCors = require('micro-cors');
+const cors = microCors({allowMethods: ['GET']});
+
 const connection = createConnection({
     host: 'localhost',
     user: cfg.user,
     password: cfg.password,
     database: cfg.database,
-    timezone: 'Z',
+    timezone: 'local',
 });
+
 connection.connect((err) => {
     if (err) {
         console.log(err);
@@ -17,7 +21,7 @@ connection.connect((err) => {
 });
 
 
-module.exports = async (request, response) => {
+const main = async (request, response) => {
     const timestamp = decodeURI(request.url.split("/?timestamp=")[1]);
     console.log(timestamp, Date.parse(timestamp));
     if (typeof timestamp !== "undefined" && !isNaN(Date.parse(timestamp))) {
@@ -35,3 +39,5 @@ module.exports = async (request, response) => {
         send(response, 400, 'Bad Request');
     }
 };
+
+module.exports = cors(main);
