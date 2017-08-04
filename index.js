@@ -32,7 +32,7 @@ const main = async (request, response) => {
                 console.log(err);
                 send(response, 500, 'Internal Server Error');
             } else {
-                send(response, 400, res);
+                send(response, 200, res);
             }
         });
     } else {
