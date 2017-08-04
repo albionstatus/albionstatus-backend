@@ -8,6 +8,10 @@ backend, where the status information is saved, and the AlbionStatus website.
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 See deployment for notes on how to deploy the project on a live system.
 
+Be sure to look into the repositories of the [website](https://github.com/manniL/albionstatus-website)
+and the [scraper and twitter bot](https://github.com/manniL/albionstatus-scraper-bot/)!
+
+
 ### Prerequisites
 
 To install the microservice on your machine, you'll need:
@@ -24,7 +28,7 @@ Okay, you got these? Great, let's continue!
 2. Get all dependencies by using `npm install`
 3. Grab a copy of the config.example.json file, enter the needed information
 and save it as config.json
-5. If you are ready to serve, use `npm start` to start the microservice
+4. If you are ready to serve, use `npm start` to start the microservice
 
 Here you go!
 
