@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "Albion Status MicroService that returns dates from MySQL DB",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manniL/albionstatus-microservice"
+  },
   "dependencies": {
     "micro": "^7.3.3",
     "micro-cors": "0.0.4",
