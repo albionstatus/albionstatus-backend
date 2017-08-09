@@ -22,8 +22,31 @@ connection.connect((err) => {
 
 
 const main = async (request, response) => {
-    const timestamp = decodeURI(request.url.split("/?timestamp=")[1]);
-    console.log(timestamp, Date.parse(timestamp));
+    if (request.url.startsWith("/current/")){
+        current(response);
+        return;
+    } else if (request.url.indexOf("/?timestamp=") !== -1) {
+        const timestamp = decodeURI(request.url.split("/?timestamp=")[1]);
+        byTimestamp(timestamp, response);
+        return;
+    }
+    send(response, 400, 'Bad Request');
+};
+
+const current = (response) => {
+    const query = "SELECT created_at, current_status, message, comment" +
+        " FROM status ORDER BY created_at DESC LIMIT 1";
+    connection.query(query, (err, res) => {
+        if (err) {
+            console.log(err);
+            send(response, 500, 'Internal Server Error');
+        } else {
+            send(response, 200, res);
+        }
+    });
+};
+
+const byTimestamp = (timestamp, response) => {
     if (typeof timestamp !== "undefined" && !isNaN(Date.parse(timestamp))) {
         const query = "SELECT created_at, current_status, message, comment" +
             " FROM status WHERE created_at >= ? ORDER BY created_at DESC";
@@ -35,8 +58,6 @@ const main = async (request, response) => {
                 send(response, 200, res);
             }
         });
-    } else {
-        send(response, 400, 'Bad Request');
     }
 };
 
