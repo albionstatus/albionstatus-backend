@@ -1,0 +1,45 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: albionstatus
+      MYSQL_USER: albionstatus
+      MYSQL_PASSWORD: albionstatus
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysqldata:/var/lib/mysql/
+      - ./db:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+  api:
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile
+    restart: unless-stopped
+    tty: true
+    working_dir: /app
+    networks:
+      - app-network
+    ports:
+      - "8083:3000"
+    depends_on:
+      - db
+  scraper:
+    build:
+      context: .
+      dockerfile: ./scrape-and-tweet/Dockerfile
+    restart: unless-stopped
+    tty: true
+    working_dir: /app
+    depends_on:
+      - db
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+volumes:
+  mysqldata:
+    driver: local

@@ -1,0 +1,1 @@
+* * * * * /usr/local/bin/node /app/scrape-and-tweet/index.js > /dev/stdout

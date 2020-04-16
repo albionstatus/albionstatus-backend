@@ -8,13 +8,16 @@
     "url": "https://github.com/manniL/albionstatus-microservice"
   },
   "dependencies": {
-    "micro": "^7.3.3",
-    "micro-cors": "0.0.4",
-    "mysql": "^2.14.0"
+    "axios": "^0.19.2",
+    "micro": "^9.3.4",
+    "micro-cors": "0.1.1",
+    "mysql2": "^2.1.0",
+    "twit": "^2.2.11",
+    "winston": "^3.2.1"
   },
   "devDependencies": {},
   "scripts": {
-    "start": "micro"
+    "start": "micro api/index.js"
   },
   "author": "Developmint GbR - Alexander Lichter",
   "license": "MIT"
