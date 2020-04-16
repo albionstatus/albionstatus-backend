@@ -20,7 +20,7 @@ async function main () {
     return
   }
 
-  Logger.verbose(`Status changed from ${lastStatus.currentStatus} to ${currentStatus.currentStatus}`)
+  Logger.info(`Status changed from ${lastStatus.currentStatus} to ${currentStatus.currentStatus}`)
 
   /*
   const message = `New server status: ${currentStatus.currentStatus}. Message: ${currentStatus.message}`
