@@ -18,5 +18,5 @@ module.exports.FAILING_STATUS = {
 module.exports.TIMEOUT_INDICATORS = ['connect timed out', 'read timed out']
 
 module.exports.MESSAGES = {
-  timeout: 'Timeout - is a DDOS ongoing?'
+  timeout: 'Server timed out'
 }

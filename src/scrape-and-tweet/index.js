@@ -1,6 +1,6 @@
 const Logger = require('./Logger.js')
 
-const { MESSAGES, TIMEOUT_INDICATORS, URLS } = require('./constants.js')
+const { MESSAGES, TIMEOUT_INDICATORS, URLS, FAILING_STATUS } = require('./constants.js')
 const { GET_LAST_STATUS, createConnection } = require('../shared/queries.js')
 
 const Config = require('../config.json')
@@ -22,7 +22,6 @@ async function main () {
 
   Logger.info(`Status changed from ${lastStatus.currentStatus} to ${currentStatus.currentStatus}`)
 
-  /*
   const message = `New server status: ${currentStatus.currentStatus}. Message: ${currentStatus.message}`
 
   const Twitter = require('twit')
@@ -38,7 +37,6 @@ async function main () {
 
   const messageIdToAnswer = await tweetMessage(twitterClient, truncatedMessage)
   await tweetMessage(twitterClient, reason, messageIdToAnswer)
-   */
 }
 
 function sanitizeMessage (rawMessage, maintenanceMessage) {
@@ -67,9 +65,15 @@ function areStatusesDifferent (currentStatus, lastStatus) {
 }
 
 async function getCurrentStatus () {
-  const [{ status, message }, maintenanceMessage] = await Promise.all([getData(URLS.STATUS), getMaintenanceStatus()])
-  Logger.verbose(`Have current status here: ${status} ${message}`)
-  return { currentStatus: sanitizeStatus(status), message: sanitizeMessage(message, maintenanceMessage) }
+  try {
+    const [{ status, message }, maintenanceMessage] = await Promise.all([getData(URLS.STATUS), getMaintenanceStatus()])
+    Logger.verbose(`Have current status here: ${status} ${message}`)
+    return { currentStatus: sanitizeStatus(status), message: sanitizeMessage(message, maintenanceMessage) }
+  } catch (e) {
+    Logger.error('Could not fetch current server status')
+    Logger.error(e)
+    return FAILING_STATUS
+  }
 }
 
 function sanitizeStatus (status) {
@@ -113,22 +117,22 @@ async function tweetMessage (client, message, messageIdToAnswer) {
     Logger.verbose('Results have been updated! Not tweeting because I am not in production mode')
     return
   }
-  Logger.verbose('Results have been updated! Tweeting now')
+  Logger.info('Results have been updated! Tweeting now')
 
-  // TODO: Don't tweet for now, just testing
-  /*
   try {
-    const { data } = await client.post('statuses/update', { status })
+    const { data } = await client.post('statuses/update', { status, in_reply_to_status_id: messageIdToAnswer, auto_populate_reply_metadata: messageIdToAnswer ? true : undefined})
 
     if (data.errors) {
-      Logger.error('Tweeting failed', data.errors)
+      Logger.error('Tweeting failed')
+      Logger.error(data.errors)
       return
     }
+
     Logger.info('Tweeted successfully')
+    return data.id_str // String version of ID because of int precision
   } catch (e) {
     Logger.error(`Tweeting failed: ${e}`)
   }
-  */
 }
 
 async function getDataAndSanitize (url) {
