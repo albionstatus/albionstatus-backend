@@ -16,7 +16,7 @@ async function main () {
   const isNewStatus = areStatusesDifferent(currentStatus, lastStatus)
 
   if (!isNewStatus) {
-    Logger.info('No changes detected')
+    Logger.verbose('No changes detected')
     return
   }
 
@@ -114,7 +114,7 @@ async function getLastStatus () {
 
 async function tweetMessage (client, message, messageIdToAnswer) {
   if (process.env.NODE_ENV !== 'production') {
-    Logger.verbose('Results have been updated! Not tweeting because I am not in production mode')
+    Logger.info('Results have been updated! Not tweeting because I am not in production mode')
     return
   }
   Logger.info('Results have been updated! Tweeting now')

@@ -27,6 +27,8 @@ services:
     depends_on:
       - db
   scraper:
+    environment:
+      - NODE_ENV=production
     build:
       context: .
       dockerfile: ./scrape-and-tweet/Dockerfile
