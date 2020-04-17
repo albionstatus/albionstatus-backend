@@ -8,7 +8,8 @@ COPY ./src/yarn.lock .
 
 RUN yarn install --frozen-lockfile
 
-COPY ./src .
+COPY ./src/shared ./shared
+COPY ./src/api ./api
 
 CMD yarn start
 

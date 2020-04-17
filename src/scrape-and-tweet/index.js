@@ -3,7 +3,7 @@ const Logger = require('./Logger.js')
 const { MESSAGES, TIMEOUT_INDICATORS, URLS, FAILING_STATUS } = require('./constants.js')
 const { GET_LAST_STATUS, createConnection } = require('../shared/queries.js')
 
-const Config = require('../config.json')
+const Config = require('../shared/config.json')
 const { mysql: mysqlConfig } = Config
 
 async function main () {

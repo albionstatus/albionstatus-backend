@@ -8,7 +8,8 @@ COPY ./src/yarn.lock .
 
 RUN yarn install --frozen-lockfile
 
-COPY ./src .
+COPY ./src/shared ./shared
+COPY ./src/scrape-and-tweet ./scrape-and-tweet
 
 # Add crontab file in the cron directory
 ADD ./scrape-and-tweet/crontab /etc/cron.d/check-albion-status

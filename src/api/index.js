@@ -1,7 +1,7 @@
 const { send } = require('micro')
 const microCors = require('micro-cors')
 
-const { mysql: mysqlConfig } = require('../config.json')
+const { mysql: mysqlConfig } = require('../shared/config.json')
 const { GET_LAST_STATUS, createConnection } = require('../shared/queries')
 
 const cors = microCors({ allowMethods: ['GET'] })
