@@ -40,11 +40,18 @@ async function main () {
 }
 
 function sanitizeMessage (rawMessage, maintenanceMessage) {
-  if (maintenanceMessage) {
-    return maintenanceMessage
+  const lowerMessage = rawMessage.toLowerCase()
+
+  const isOnline = lowerMessage.includes('is online')
+
+  if (isOnline) {
+    return lowerMessage
   }
 
-  const lowerMessage = rawMessage.toLowerCase()
+  if (maintenanceMessage) {
+    return maintenanceMessage.toLowerCase()
+  }
+
   const isTimeout = TIMEOUT_INDICATORS.some(s => lowerMessage.includes(s))
   return isTimeout ? MESSAGES.timeout : lowerMessage
 }
@@ -120,7 +127,11 @@ async function tweetMessage (client, message, messageIdToAnswer) {
   Logger.info('Results have been updated! Tweeting now')
 
   try {
-    const { data } = await client.post('statuses/update', { status: message, in_reply_to_status_id: messageIdToAnswer, auto_populate_reply_metadata: messageIdToAnswer ? true : undefined})
+    const { data } = await client.post('statuses/update', {
+      status: message,
+      in_reply_to_status_id: messageIdToAnswer,
+      auto_populate_reply_metadata: messageIdToAnswer ? true : undefined
+    })
 
     if (data.errors) {
       Logger.error('Tweeting failed')
