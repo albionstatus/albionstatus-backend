@@ -10,7 +10,7 @@ module.exports.HEADERS = {
   'User-Agent': `AlbionStatus Bot @ albionstatus.com, Version: ${version}`
 }
 module.exports.FAILING_STATUS = {
-  current_status: 'unknown',
+  currentStatus: 'unknown',
   message: 'AlbionStatus couldn\'t fetch status. Likely there is a maintenance going on',
   comment: 'Could not fetch status.'
 }

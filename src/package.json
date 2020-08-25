@@ -8,12 +8,14 @@
     "url": "https://github.com/manniL/albionstatus-microservice"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.20.0",
+    "date-fns": "^2.15.0",
     "micro": "^9.3.4",
     "micro-cors": "0.1.1",
     "mysql2": "^2.1.0",
+    "node-cache": "^5.1.2",
     "twit": "^2.2.11",
-    "winston": "^3.2.1"
+    "winston": "^3.3.3"
   },
   "devDependencies": {},
   "scripts": {
