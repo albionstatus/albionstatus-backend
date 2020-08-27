@@ -1,12 +1,22 @@
 const Logger = require('./Logger.js')
 
 const { MESSAGES, TIMEOUT_INDICATORS, URLS, FAILING_STATUS } = require('./constants.js')
-const { GET_LAST_STATUS, createConnection } = require('../shared/queries.js')
+const { GET_LAST_STATUS, createConnectionPool } = require('../shared/queries.js')
 
 const Config = require('../shared/config.json')
 const { mysql: mysqlConfig } = Config
+let pool
 
 async function main () {
+
+  pool = await mysql.createPool({
+    ...mysqlConfig,
+    host: mysqlConfig.host || 'db',
+    waitForConnections: true,
+    connectionLimit: 20,
+    queueLimit: 0
+  })
+
   Logger.verbose('Starting')
   const [currentStatus, lastStatus] = await Promise.all([getCurrentStatus(), getLastStatus()])
 
@@ -57,11 +67,9 @@ function sanitizeMessage (rawMessage, maintenanceMessage) {
 }
 
 async function insertStatus ({ currentStatus, message }) {
-  const connection = await createConnection(mysqlConfig)
 
   const query = 'INSERT INTO `status` (current_status, message) VALUES (?, ?)'
-  await connection.query(query, [currentStatus, message])
-  await connection.end()
+  await pool.query(query, [currentStatus, message])
 }
 
 function areStatusesDifferent (currentStatus, lastStatus) {
@@ -97,10 +105,8 @@ async function getMaintenanceStatus () {
 async function getLastStatus () {
   // TODO: Error handling
   Logger.verbose('Fetching last status')
-  const connection = await createConnection(mysqlConfig)
 
-  const [potentialFirstResult] = await connection.query(GET_LAST_STATUS)
-  await connection.end()
+  const [potentialFirstResult] = await pool.query(GET_LAST_STATUS)
 
   Logger.verbose('Got first result')
 
