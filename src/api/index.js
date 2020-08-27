@@ -34,8 +34,10 @@ const current = async (connection, response) => {
 
   try {
     const { result, error } = await wrapAsync(connection.query(GET_LAST_STATUS))
+
     if (error) {
-      return sendErrorResp(response)(error)
+      sendErrorResp(response)(error)
+      return await connection.end()
     }
     const [rows] = result
     const [entry] = rows
@@ -45,7 +47,7 @@ const current = async (connection, response) => {
     const setSeconds = require('date-fns/setSeconds')
     const nextMinuteDate = setSeconds(addMinutes(new Date(createdAt), 1), 0)
 
-    const ttlInMs =  nextMinuteDate - new Date()
+    const ttlInMs = nextMinuteDate - new Date()
     const ttlInSeconds = ttlInMs / 1000
     cache.set('current', rows, ttlInSeconds)
 
@@ -68,7 +70,8 @@ const byTimestamp = async (connection, timestamp, response) => {
   try {
     const { result, error } = await wrapAsync(connection.query(query, [timestamp]))
     if (error) {
-      return sendErrorResp(response)(error)
+      sendErrorResp(response)(error)
+      await connection.end()
     }
     const [rows] = result
     sendResp(response)(rows)
