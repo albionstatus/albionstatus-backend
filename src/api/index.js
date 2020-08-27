@@ -71,7 +71,7 @@ const byTimestamp = async (connection, timestamp, response) => {
     const { result, error } = await wrapAsync(connection.query(query, [timestamp]))
     if (error) {
       sendErrorResp(response)(error)
-      await connection.end()
+      return await connection.end()
     }
     const [rows] = result
     sendResp(response)(rows)
