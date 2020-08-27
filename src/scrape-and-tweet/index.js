@@ -157,10 +157,15 @@ function sanitizeStatusData (statusString) {
     return {}
   }
 
+  if (typeof statusString === 'object') {
+    return statusString
+  }
+
   const sanitizedString = statusString
     .replace(/[\r\n]+/g, ' ')
     .replace(/\s{2,}/g, ' ')
     .trim()
+
   return JSON.parse(sanitizedString)
 }
 
