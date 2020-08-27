@@ -1,10 +1,12 @@
 const Logger = require('./Logger.js')
 
 const { MESSAGES, TIMEOUT_INDICATORS, URLS, FAILING_STATUS } = require('./constants.js')
-const { GET_LAST_STATUS, createConnectionPool } = require('../shared/queries.js')
+const { GET_LAST_STATUS } = require('../shared/queries.js')
+const mysql = require('mysql2/promise')
 
 const Config = require('../shared/config.json')
 const { mysql: mysqlConfig } = Config
+
 let pool
 
 async function main () {
