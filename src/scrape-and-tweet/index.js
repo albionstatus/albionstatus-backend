@@ -68,7 +68,13 @@ function areStatusesDifferent (currentStatus, lastStatus) {
   if (typeof lastStatus === 'undefined') {
     return false
   }
-  return currentStatus.currentStatus !== lastStatus.currentStatus || currentStatus.message !== lastStatus.message
+
+  const isCurrentStatusEqual = currentStatus.currentStatus === lastStatus.currentStatus
+  const isMessageEqual = currentStatus.message !== lastStatus.message
+
+  const isDifferent = !isCurrentStatusEqual || !isMessageEqual
+
+  return isDifferent
 }
 
 async function getCurrentStatus () {
@@ -90,8 +96,12 @@ function sanitizeStatus (status) {
 }
 
 async function getMaintenanceStatus () {
-  const status = await getDataAndSanitize(URLS.MAINTENANCE)
-  return status.message.includes('maintenance') ? status.message : undefined
+  try {
+    const status = await getDataAndSanitize(URLS.MAINTENANCE)
+    return status.message.includes('maintenance') ? status.message : undefined
+  } catch(e) {
+    return undefined
+  }
 }
 
 async function getLastStatus () {
