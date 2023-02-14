@@ -1,5 +1,3 @@
-const Logger = require('./Logger.js')
-
 const { MESSAGES, TIMEOUT_INDICATORS, URLS, FAILING_STATUS } = require('./constants.js')
 const { GET_LAST_STATUS } = require('../shared/queries.js')
 

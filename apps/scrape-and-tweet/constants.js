@@ -3,7 +3,7 @@ module.exports.URLS = {
   MAINTENANCE: 'http://live.albiononline.com/status.txt'
 }
 
-const pkg = require('../package.json')
+const pkg = require('../src/package.json')
 const { version } = pkg
 
 module.exports.HEADERS = {

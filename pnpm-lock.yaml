@@ -1,14 +1,16 @@
 lockfileVersion: 5.4
 
-specifiers:
-  nitropack: ^2.2.1
-  ofetch: ^1.0.0
-  zod: ^3.20.6
+importers:
 
-dependencies:
-  nitropack: 2.2.1
-  ofetch: 1.0.0
-  zod: 3.20.6
+  apps/api:
+    specifiers:
+      nitropack: ^2.2.1
+      ofetch: ^1.0.0
+      zod: ^3.20.6
+    dependencies:
+      nitropack: 2.2.1
+      ofetch: 1.0.0
+      zod: 3.20.6
 
 packages:
 
