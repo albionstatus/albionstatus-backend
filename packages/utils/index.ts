@@ -1,0 +1,3 @@
+export const getLastStatus = () => {
+  // TODO
+}
