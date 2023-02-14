@@ -1,10 +1,5 @@
 import Twit from 'twit'
-
-// TODO
-type Status = {
-  raw: any,
-  message: string
-}
+import { ServerName } from '../shared/types.js'
 
 const CONFIG = {
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -13,9 +8,15 @@ const CONFIG = {
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 }
 
-export const tweet = async (status: Status) => {
-  console.log('LOL')
-  const message = `New server status: ${status.raw}. Message: ${status.message}`
+type TweetArgs = {
+  status: {
+    raw: any,
+    message: string
+  },
+  server: ServerName
+}
+export const tweet = async ({ status, server }: TweetArgs) => {
+  const message = `New server status of Albion ${server}: ${status.raw}. #albion${server} Message: ${status.message}`
 
   const twitterClient = new Twit(CONFIG)
 
@@ -57,6 +58,7 @@ async function tweetMessage (client: Twit, message: string, messageIdToAnswer?: 
     // @ts-expect-error Faulty types
     return data.id_str as string // String version of ID because of int precision
   } catch (e) {
-    console.error(`Tweeting failed: ${e}`)
+    console.error('Tweeting failed')
+    console.error(e)
   }
 }

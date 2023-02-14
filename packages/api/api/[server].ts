@@ -1,4 +1,4 @@
-import { serverNameSchema } from "../types.js"
+import { serverNameSchema } from "../../shared/types.js"
 
 export default defineEventHandler((event) => {
   const { server } = event.context.params

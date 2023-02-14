@@ -1,4 +1,5 @@
 import { version } from '../../package.json'
+import type { Status } from './types.js'
 export const URLS = {
   STATUS: {
     west: 'http://serverstatus.albiononline.com/',
@@ -9,8 +10,8 @@ export const URLS = {
 export const HEADERS = {
   'User-Agent': `AlbionStatus Bot @ albionstatus.com, Version: ${version}`
 }
-export const FAILING_STATUS = {
-  currentStatus: 'unknown',
+export const FAILING_STATUS: Status = {
+  type: 'unknown',
   message: 'AlbionStatus couldn\'t fetch status. Likely there is a maintenance going on',
   comment: 'Could not fetch status.'
 }

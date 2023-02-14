@@ -1,5 +1,5 @@
 {
-  "name": "albionstatus-scrape-and-tweet",
+  "name": "@albionstatus/scrape-and-tweet",
   "version": "1.0.0",
   "type": "module",
   "description": "AlbionStatus backend responsible for scraping, tweeting and the API",

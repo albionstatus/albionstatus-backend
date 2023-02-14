@@ -1,5 +1,5 @@
 {
-  "name": "@albionstatus/api",
+  "name": "albionstatus-backend",
   "version": "1.0.0",
   "description": "AlbionStatus backend responsible for scraping, tweeting and the API",
   "repository": {
@@ -7,10 +7,5 @@
     "url": "https://github.com/albionstatus/albionstatus-backend"
   },
   "author": "Alexander Lichter <npm@lichter.io>",
-  "license": "MIT",
-  "dependencies": {
-    "nitropack": "^2.2.1",
-    "ofetch": "^1.0.0",
-    "zod": "^3.20.6"
-  }
+  "license": "MIT"
 }
