@@ -15,5 +15,8 @@
     "nitropack": "^2.2.1",
     "ofetch": "^1.0.0",
     "zod": "^3.20.6"
+  },
+  "devDependencies": {
+    "wrangler": "^2.9.1"
   }
 }
