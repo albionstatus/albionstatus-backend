@@ -5,7 +5,7 @@ importers:
   .:
     specifiers: {}
 
-  apps/api:
+  packages/api:
     specifiers:
       nitropack: ^2.2.1
       ofetch: ^1.0.0

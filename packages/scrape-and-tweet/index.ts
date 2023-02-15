@@ -13,6 +13,7 @@ async function scrapeAndTweet (server: ServerName) {
   await tweet({ status: currentStatus, server })
 }
 
-await Promise.all([
-  scrapeAndTweet('east'), scrapeAndTweet('west')
+await Promise.allSettled([
+  scrapeAndTweet('east'),
+  scrapeAndTweet('west')
 ])
