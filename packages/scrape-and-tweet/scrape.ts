@@ -9,7 +9,7 @@ export async function scrape (server: ServerName) {
   const logger = consola.withScope(`scraper-${server}`)
   logger.info(`Start scraping`)
 
-  const { insertStatus, getLastStatus } = await createDbClient({
+  const { insertStatus, getLastStatus, close } = await createDbClient({
     connection: process.env.MONGO_CONNECTION,
     database: 'albionstatus',
     server
@@ -22,6 +22,8 @@ export async function scrape (server: ServerName) {
 
   await insertStatus(currentStatus)
   logger.info('Inserted status')
+  
+  await close()
 
   const didStatusUpdate = areStatusesDifferent(currentStatus, lastStatus)
   return { didStatusUpdate, currentStatus }

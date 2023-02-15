@@ -18,3 +18,4 @@ await Promise.allSettled([
   scrapeAndTweet('east'),
   scrapeAndTweet('west')
 ])
+

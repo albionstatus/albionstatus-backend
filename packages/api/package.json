@@ -6,6 +6,9 @@
     "type": "git",
     "url": "https://github.com/albionstatus/albionstatus-backend"
   },
+  "scripts": {
+    "dev": "nitropack dev"
+  },
   "author": "Alexander Lichter <npm@lichter.io>",
   "license": "MIT",
   "dependencies": {

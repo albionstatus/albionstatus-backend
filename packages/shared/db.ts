@@ -6,6 +6,7 @@ import type { ObjectId } from "mongodb";
 
 export type StatusDocument = Status & {
   id: ObjectId
+  _id?: string
   created_at: Date
 }
 
@@ -30,7 +31,7 @@ export async function createDbClient ({ connection, database, server }: CreateDb
           comment: 'booting up',
         }
       }
-      const { id: _, ...status } = result
+      const { _id: _, ...status } = result
       return status
     } catch (e) {
       console.error('Could not fetch current server status')
@@ -38,6 +39,20 @@ export async function createDbClient ({ connection, database, server }: CreateDb
       return FAILING_STATUS
     }
   }
+
+  async function getPastStatuses (timestamp: Date): Promise<Status[] | false> {
+    try {
+      const result = await collection.find<StatusDocument>({ created_at: { $gt: timestamp } }).toArray();
+      if (!result?.length) {
+        return false
+      }
+      return result.map(({ id: _, ...status }) => status)
+    } catch (e) {
+      console.error('Could not fetch current server status')
+      console.error(e)
+      return false
+    }
+  } 
 
   async function insertStatus (status: Status) {
     const date = new Date();
@@ -53,6 +68,7 @@ export async function createDbClient ({ connection, database, server }: CreateDb
 
   return {
     getLastStatus,
+    getPastStatuses,
     insertStatus,
     close
   }
