@@ -10,6 +10,7 @@
   "author": "Alexander Lichter <npm@lichter.io>",
   "license": "MIT",
   "dependencies": {
+    "consola": "^2.15.3",
     "ofetch": "^1.0.0",
     "ts-node": "^10.9.1",
     "twit": "^2.2.11",

@@ -1,15 +1,17 @@
-import { ServerName, Status } from "../shared/types.js"
+import { ServerName, Status, StatusType } from "../shared/types.js"
 import { createDbClient } from "../shared/db.js"
 import { $fetch } from "ofetch"
+import { FAILING_STATUS, MESSAGES, TIMEOUT_INDICATORS } from "../shared/constants.js"
 import { STATUS_URLS } from "./constants.js"
-import { FAILING_STATUS } from "../shared/constants.js"
+import consola from 'consola'
 
 export async function scrape (server: ServerName) {
-  console.debug('Start scraping')
+  const logger = consola.withScope(`scraper-${server}`)
+  logger.info(`Start scraping`)
 
   const { insertStatus, getLastStatus } = await createDbClient({
     connection: process.env.MONGO_CONNECTION,
-    database: process.env.MONGO_DATABASE,
+    database: 'albionstatus',
     server
   })
 
@@ -19,7 +21,7 @@ export async function scrape (server: ServerName) {
   ])
 
   await insertStatus(currentStatus)
-  console.debug('Inserted status')
+  logger.info('Inserted status')
 
   const didStatusUpdate = areStatusesDifferent(currentStatus, lastStatus)
   return { didStatusUpdate, currentStatus }
@@ -33,59 +35,43 @@ function areStatusesDifferent (currentStatus: Status, lastStatus?: Status) {
   return JSON.stringify(currentStatus) !== JSON.stringify(lastStatus)
 }
 
+type ServerStatusResponse = {
+  status: string
+  message: string
+}
+
 export async function getCurrentStatus (server: string): Promise<Status> {
+  const logger = consola.withScope(`scraper-${server}`)
+
   try {
-    const [{ status, message }, _maintenanceMessage] = await Promise.all([
-      $fetch(STATUS_URLS[server], { responseType: 'json' }),
-      // getMaintenanceStatus()
-    ])
-    console.debug(`Have current status here: ${status} ${message}`)
+    const { status, message } = await $fetch<ServerStatusResponse>(STATUS_URLS[server], { responseType: 'json' })
+    logger.info(`Have current status here: ${status} ${message}`)
     return {
-      // type: sanitizeStatus(status),
-      // message: sanitizeMessage(message, maintenanceMessage)
+      type: sanitizeStatus(status) as StatusType,
+      message: sanitizeMessage(message)
     }
   } catch (e) {
-    console.error('Could not fetch current server status')
-    console.error(e)
+    logger.error('Could not fetch current server status')
+    logger.error(e)
     return FAILING_STATUS
   }
 }
 
-// function sanitizeStatus (status: string) {
-//   const STATUS_OFFLINE_VALUES = [500, '500']
+function sanitizeStatus (status: string) {
+  const STATUS_OFFLINE_VALUES = [500, '500']
 
-//   return STATUS_OFFLINE_VALUES.includes(status) ? 'offline' : status
-// }
+  return STATUS_OFFLINE_VALUES.includes(status) ? 'offline' : status
+}
 
-// async function getMaintenanceStatus () {
-//   try {
-//     const status = await getDataAndSanitize(URLS.MAINTENANCE)
-//     return status.message.includes('maintenance') ? status.message : undefined
-//   } catch (e) {
-//     return undefined
-//   }
-// }
+function sanitizeMessage (rawMessage: string) {
+  const lowerMessage = rawMessage.toLowerCase()
 
-// function sanitizeMessage (rawMessage: string, maintenanceMessage?: string) {
-//   const lowerMessage = rawMessage.toLowerCase()
+  const isOnline = lowerMessage.includes('is online')
 
-//   const isOnline = lowerMessage.includes('is online')
+  if (isOnline) {
+    return lowerMessage
+  }
 
-//   if (isOnline) {
-//     return lowerMessage
-//   }
-
-//   if (maintenanceMessage) {
-//     return maintenanceMessage.toLowerCase()
-//   }
-
-//   const isTimeout = TIMEOUT_INDICATORS.some(s => lowerMessage.includes(s))
-//   return isTimeout ? MESSAGES.timeout : lowerMessage
-// }
-
-/*
-
-const data = await $fetch(URL, {
-  responseType: 'json'
-})
-*/
+  const isTimeout = TIMEOUT_INDICATORS.some(s => lowerMessage.includes(s))
+  return isTimeout ? MESSAGES.timeout : lowerMessage
+}

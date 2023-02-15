@@ -1,5 +1,5 @@
-import { version } from '../../package.json'
 import type { Status } from './types.js'
+
 export const URLS = {
   STATUS: {
     west: 'http://serverstatus.albiononline.com/',
@@ -8,7 +8,7 @@ export const URLS = {
 }
 
 export const HEADERS = {
-  'User-Agent': `AlbionStatus Bot @ albionstatus.com, Version: ${version}`
+  'User-Agent': `AlbionStatus Bot @ albionstatus.com`
 }
 export const FAILING_STATUS: Status = {
   type: 'unknown',

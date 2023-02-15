@@ -1,4 +1,4 @@
-import { FAILING_STATUS } from './constants'
+import { FAILING_STATUS } from './constants.js'
 import { ServerName, Status } from './types.js'
 import mongoDB from "mongodb";
 
@@ -44,7 +44,7 @@ export async function createDbClient ({ connection, database, server }: CreateDb
     date.setSeconds(0)
     date.setMilliseconds(0)
 
-    collection.insertOne({ ...status, created_at: date });
+    await collection.insertOne({ ...status, created_at: date });
   }
 
   async function close () {

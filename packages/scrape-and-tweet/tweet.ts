@@ -1,5 +1,5 @@
 import Twit from 'twit'
-import { ServerName } from '../shared/types.js'
+import { ServerName, Status } from '../shared/types.js'
 
 const CONFIG = {
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -9,14 +9,11 @@ const CONFIG = {
 }
 
 type TweetArgs = {
-  status: {
-    raw: any,
-    message: string
-  },
+  status: Status
   server: ServerName
 }
 export const tweet = async ({ status, server }: TweetArgs) => {
-  const message = `New server status of Albion ${server}: ${status.raw}. #albion${server} Message: ${status.message}`
+  const message = `New server status of Albion ${server}: ${status.type}. #albion${server} Message: ${status.message}`
 
   const twitterClient = new Twit(CONFIG)
 
