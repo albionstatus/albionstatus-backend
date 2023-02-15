@@ -10,7 +10,8 @@ async function scrapeAndTweet (server: ServerName) {
     process.exit()
   }
 
-  await tweet({ status: currentStatus, server })
+  // Do not tweet yet to avoid double tweets
+  // await tweet({ status: currentStatus, server })
 }
 
 await Promise.allSettled([
