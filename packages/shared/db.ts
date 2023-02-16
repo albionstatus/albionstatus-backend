@@ -1,8 +1,6 @@
 import { FAILING_STATUS } from './constants.js'
 import { ServerName, Status } from './types.js'
-import mongoDB from "mongodb";
-
-import type { ObjectId } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 
 export type StatusDocument = Status & {
   id: ObjectId
@@ -16,7 +14,7 @@ type CreateDbClientArgs = {
   server: ServerName
 }
 export async function createDbClient ({ connection, database, server }: CreateDbClientArgs) {
-  const client = new mongoDB.MongoClient(connection)
+  const client = new MongoClient(connection)
   await client.connect()
   const db = client.db(database);
   const collection = db.collection(`server_${server}`);

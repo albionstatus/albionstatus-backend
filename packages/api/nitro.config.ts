@@ -1,4 +1,4 @@
-import { defineNitroConfig } from "nitropack";
+import { defineNitroConfig } from "nitropack-edge";
 
 export default defineNitroConfig({
   preset: 'cloudflare',
