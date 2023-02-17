@@ -9,6 +9,6 @@ export default defineNitroConfig({
     }
   },
   runtimeConfig: {
-    mongodbConnection: ''
+    realmAppId: ''
   }
 });

@@ -1,20 +1,18 @@
 import { createDbClient } from '../../../shared/db.js'
 import type { ServerName } from '../../../shared/types.js'
 
-const { mongodbConnection } = useRuntimeConfig()
+const { realmAppId: appId } = useRuntimeConfig()
 
 export default defineCachedEventHandler(async (event) => {
   const { server } = event.context.params
 
-  const { getLastStatus, close } = await createDbClient({
-    connection: mongodbConnection,
-    database: 'albionstatus',
+  const { getLastStatus } = await createDbClient({
+    appId,
     server: server as ServerName
   })
 
   try {
     const result = await getLastStatus()
-    await close()
 
     return result
   } catch (e) {

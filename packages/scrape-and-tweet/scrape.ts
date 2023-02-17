@@ -8,10 +8,9 @@ import consola from 'consola'
 export async function scrape (server: ServerName) {
   const logger = consola.withScope(`scraper-${server}`)
   logger.info(`Start scraping`)
-
-  const { insertStatus, getLastStatus, close } = await createDbClient({
-    connection: process.env.MONGO_CONNECTION,
-    database: 'albionstatus',
+  const { insertStatus, getLastStatus } = await createDbClient({
+    appId: process.env.REALM_APP_ID,
+    apiKey: process.env.REALM_API_KEY,
     server
   })
 
@@ -22,8 +21,7 @@ export async function scrape (server: ServerName) {
 
   await insertStatus(currentStatus)
   logger.info('Inserted status')
-  
-  await close()
+
 
   const didStatusUpdate = areStatusesDifferent(currentStatus, lastStatus)
   return { didStatusUpdate, currentStatus }

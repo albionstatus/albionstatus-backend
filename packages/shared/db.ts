@@ -1,27 +1,28 @@
 import { FAILING_STATUS } from './constants.js'
 import { ServerName, Status } from './types.js'
-import { MongoClient, ObjectId } from "mongodb";
+import { App, Credentials } from "realm-web";
+
+type Document = globalThis.Realm.Services.MongoDB.Document;
 
 export type StatusDocument = Status & {
-  id: ObjectId
-  _id?: string
   created_at: Date
-}
+} & Document
 
 type CreateDbClientArgs = {
-  connection: string,
-  database: string,
-  server: ServerName
-}
-export async function createDbClient ({ connection, database, server }: CreateDbClientArgs) {
-  const client = new MongoClient(connection)
-  await client.connect()
-  const db = client.db(database);
-  const collection = db.collection(`server_${server}`);
+  appId: string,
+  apiKey?: string
+  server: ServerName,
+} 
+export async function createDbClient ({ appId: connection, server, apiKey }: CreateDbClientArgs) {
+  const app = new App(connection)
+  const credentials = apiKey ? Credentials.apiKey(apiKey) : Credentials.anonymous();
+  const user = await app.logIn(credentials);
+  const client = user.mongoClient('mongodb-atlas');
+  const collection = client.db('albionstatus').collection<StatusDocument>(`server_${server}`);
 
   async function getLastStatus (): Promise<Status> {
     try {
-      const result = await collection.findOne<StatusDocument>({});
+      const result = await collection.findOne({});
       if (!result) {
         return {
           type: 'unknown',
@@ -40,17 +41,17 @@ export async function createDbClient ({ connection, database, server }: CreateDb
 
   async function getPastStatuses (timestamp: Date): Promise<Status[] | false> {
     try {
-      const result = await collection.find<StatusDocument>({ created_at: { $gt: timestamp } }).toArray();
+      const result = await collection.find({ created_at: { $gt: timestamp } });
       if (!result?.length) {
         return false
       }
-      return result.map(({ id: _, ...status }) => status)
+      return result.map(({ _id: _, ...status }) => status)
     } catch (e) {
       console.error('Could not fetch current server status')
       console.error(e)
       return false
     }
-  } 
+  }
 
   async function insertStatus (status: Status) {
     const date = new Date();
@@ -60,15 +61,10 @@ export async function createDbClient ({ connection, database, server }: CreateDb
     await collection.insertOne({ ...status, created_at: date });
   }
 
-  async function close () {
-    await client.close()
-  }
-
   return {
     getLastStatus,
     getPastStatuses,
-    insertStatus,
-    close
+    insertStatus
   }
 }
 

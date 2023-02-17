@@ -14,8 +14,13 @@ async function scrapeAndTweet (server: ServerName) {
   // await tweet({ status: currentStatus, server })
 }
 
-await Promise.allSettled([
+const result = await Promise.allSettled([
   scrapeAndTweet('east'),
   scrapeAndTweet('west')
 ])
+
+if (!result.every(({ status }) => status === 'fulfilled')) {
+  console.error('At least one scraper failed')
+  console.error(result)
+}
 
