@@ -12,7 +12,7 @@ type CreateDbClientArgs = {
   appId: string,
   apiKey?: string
   server: ServerName,
-} 
+}
 export async function createDbClient ({ appId: connection, server, apiKey }: CreateDbClientArgs) {
   const app = new App(connection)
   const credentials = apiKey ? Credentials.apiKey(apiKey) : Credentials.anonymous();
@@ -22,7 +22,7 @@ export async function createDbClient ({ appId: connection, server, apiKey }: Cre
 
   async function getLastStatus (): Promise<Status> {
     try {
-      const result = await collection.findOne({});
+      const result = await collection.findOne({}, { sort: { created_at: -1 } });
       if (!result) {
         return {
           type: 'unknown',
