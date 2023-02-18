@@ -17,8 +17,8 @@ jobs:
           node-version: '18.x'
           cache: pnpm
 
-      - name: Install
-        run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Scrape status
         run: pnpm --filter scrape-and-tweet scrape
