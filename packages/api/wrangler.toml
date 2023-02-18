@@ -6,3 +6,8 @@ account_id = "1352b1a4f604a54c8862bec20881b0fb"
 
 [site]
 bucket = ".output/public"
+
+[vars]
+
+# The necessary secrets are:
+# - REALM_APP_ID

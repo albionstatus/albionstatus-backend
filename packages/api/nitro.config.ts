@@ -9,6 +9,13 @@ export default defineNitroConfig({
     }
   },
   runtimeConfig: {
+    // Only used in development
+    // CF ENV variable handling used in prod
     realmAppId: ''
+  },
+  // https://github.com/realm/realm-js/pull/5452
+  replace: {
+    'process.release.name': '""',
+    'process.versions.node': '""'
   }
 });
