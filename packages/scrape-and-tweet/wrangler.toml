@@ -1,6 +1,7 @@
 name = "albionstatus-scraper"
 main = "index.ts"
 compatibility_date = "2023-02-18"
+account_id = "1352b1a4f604a54c8862bec20881b0fb"
 
 [triggers]
 crons = [ "* * * * *" ]
