@@ -1,0 +1,16 @@
+name = "albionstatus-scraper"
+main = "index.ts"
+compatibility_date = "2023-02-18"
+
+[triggers]
+crons = [ "* * * * *" ]
+
+[vars]
+
+# Needed secrets are
+# - REALM_APP_ID
+# - REALM_API_KEY
+# - TWITTER_CONSUMER_KEY
+# - TWITTER_CONSUMER_SECRET
+# - TWITTER_ACCESS_TOKEN
+# - TWITTER_ACCESS_TOKEN_SECRET

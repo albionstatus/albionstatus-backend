@@ -1,21 +1,21 @@
 import Twit from 'twit'
 import { ServerName, Status } from '../shared/types.js'
-
-const CONFIG = {
-  consumer_key: process.env.TWITTER_CONSUMER_KEY,
-  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-  access_token: process.env.TWITTER_ACCESS_TOKEN,
-  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-}
+import { Env } from './types.js'
 
 type TweetArgs = {
   status: Status
-  server: ServerName
+  server: ServerName,
+  env: Env
 }
-export const tweet = async ({ status, server }: TweetArgs) => {
+export const tweet = async ({ status, server, env }: TweetArgs) => {
   const message = `New server status of Albion ${server}: ${status.type}. #albion${server} Message: ${status.message}`
 
-  const twitterClient = new Twit(CONFIG)
+  const twitterClient = new Twit({
+    consumer_key: env.TWITTER_CONSUMER_KEY,
+    consumer_secret: env.TWITTER_CONSUMER_SECRET,
+    access_token: env.TWITTER_ACCESS_TOKEN,
+    access_token_secret: env.TWITTER_ACCESS_TOKEN_SECRET
+  })
 
   if (message.length <= 280) {
     await tweetMessage(twitterClient, message)

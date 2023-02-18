@@ -29,8 +29,15 @@ jobs:
       - name: Build
         run: pnpm --filter api build
 
-      - name: Publish to Cloudflare
+      - name: Publish API to Cloudflare
         uses: cloudflare/wrangler-action@2.0.0
         with:
           workingDirectory: 'packages/api'
           apiToken: ${{ secrets.CF_API_TOKEN }}
+
+      - name: Publish Scraper to Cloudflare
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          workingDirectory: 'packages/scrape-and-tweet'
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+    

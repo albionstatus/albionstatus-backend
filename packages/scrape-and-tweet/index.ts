@@ -1,26 +1,35 @@
+
 import { scrape } from "./scrape.js"
 import { tweet } from "./tweet.js"
 import type { ServerName } from '../shared/types.js'
+import { Env } from "./types.js"
 
-async function scrapeAndTweet (server: ServerName) {
-  const { didStatusUpdate, currentStatus } = await scrape(server)
+export default {
+	async scheduled (
+		controller: ScheduledController,
+		env: Env,
+		ctx: ExecutionContext
+	): Promise<void> {
+		const result = await Promise.allSettled([
+			scrapeAndTweet('east', env),
+			scrapeAndTweet('west', env)
+		])
 
-  if (!didStatusUpdate) {
-    console.log("Status did not update")
-    process.exit()
-  }
-
-  // Do not tweet yet to avoid double tweets
-  // await tweet({ status: currentStatus, server })
+		if (!result.every(({ status }) => status === 'fulfilled')) {
+			console.error('At least one scraper failed')
+			console.error(result)
+		}
+	}
 }
 
-const result = await Promise.allSettled([
-  scrapeAndTweet('east'),
-  scrapeAndTweet('west')
-])
+async function scrapeAndTweet (server: ServerName, env: Env) {
+	const { didStatusUpdate, currentStatus } = await scrape(server, env)
 
-if (!result.every(({ status }) => status === 'fulfilled')) {
-  console.error('At least one scraper failed')
-  console.error(result)
+	if (!didStatusUpdate) {
+		console.log("Status did not update")
+		return { success: true, message: "Status did not update" }
+	}
+
+	// Do not tweet yet to avoid double tweets
+	// await tweet({ status: currentStatus, server, env })
 }
-
