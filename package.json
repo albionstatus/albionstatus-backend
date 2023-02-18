@@ -1,0 +1,11 @@
+{
+  "name": "albionstatus-backend",
+  "version": "1.0.0",
+  "description": "AlbionStatus backend responsible for scraping, tweeting and the API",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/albionstatus/albionstatus-backend"
+  },
+  "author": "Alexander Lichter <npm@lichter.io>",
+  "license": "MIT"
+}
