@@ -1,16 +1,17 @@
 import { ServerName, Status, StatusType } from "../shared/types.js"
 import { createDbClient } from "../shared/db.js"
 import { $fetch } from "ofetch"
+import consola from 'consola'
 import { FAILING_STATUS, MESSAGES, TIMEOUT_INDICATORS } from "../shared/constants.js"
 import { STATUS_URLS } from "./constants.js"
-import consola from 'consola'
+import type { Env } from "./types.js"
 
-export async function scrape (server: ServerName) {
+export async function scrape (server: ServerName, env: Env) {
   const logger = consola.withScope(`scraper-${server}`)
   logger.info(`Start scraping`)
   const { insertStatus, getLastStatus } = await createDbClient({
-    appId: process.env.REALM_APP_ID,
-    apiKey: process.env.REALM_API_KEY,
+    appId: env.REALM_APP_ID,
+    apiKey: env.REALM_API_KEY,
     server
   })
 
@@ -40,7 +41,7 @@ type ServerStatusResponse = {
   message: string
 }
 
-export async function getCurrentStatus (server: string): Promise<Status> {
+export async function getCurrentStatus (server: ServerName): Promise<Status> {
   const logger = consola.withScope(`scraper-${server}`)
 
   try {
