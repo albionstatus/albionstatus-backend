@@ -1,4 +1,4 @@
-ame: cloudflare
+name: cloudflare
 
 on:
   push:
