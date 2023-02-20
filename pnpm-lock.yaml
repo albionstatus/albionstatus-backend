@@ -14,6 +14,7 @@ importers:
 
   packages/api:
     specifiers:
+      date-fns: ^2.29.3
       nitropack: ^2.2.2
       ofetch: ^1.0.0
       wrangler: ^2.9.1
@@ -21,6 +22,7 @@ importers:
     dependencies:
       nitropack: 2.2.2
     devDependencies:
+      date-fns: 2.29.3
       ofetch: 1.0.0
       wrangler: 2.9.1
       zod: 3.20.6
@@ -1645,6 +1647,11 @@ packages:
     dependencies:
       assert-plus: 1.0.0
     dev: false
+
+  /date-fns/2.29.3:
+    resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
+    engines: {node: '>=0.11'}
+    dev: true
 
   /debug/2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
