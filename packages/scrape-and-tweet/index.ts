@@ -30,6 +30,5 @@ async function scrapeAndTweet (server: ServerName, env: Env) {
 		return { success: true, message: "Status did not update" }
 	}
 
-	// Do not tweet yet to avoid double tweets
-	// await tweet({ status: currentStatus, server, env })
+	await tweet({ status: currentStatus, server, env })
 }
