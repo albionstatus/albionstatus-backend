@@ -19,27 +19,7 @@ export const tweet = async ({ status, server, env }: TweetArgs) => {
     access_token: env.TWITTER_ACCESS_TOKEN,
     access_token_secret: env.TWITTER_ACCESS_TOKEN_SECRET
   }
-  await tweetMessage(message, config)
-}
-
-async function tweetMessage (message: string, config: TwitterKeys) {
-  console.info('Results have been updated! Tweeting now')
-
-  try {
-    const { data } = await sendTweet(message, config)
-
-    if (data.errors) {
-      console.error('Tweeting failed')
-      console.error(data.errors)
-      return
-    }
-
-    console.info('Tweeted successfully')
-    return data.id_str as string // String version of ID because of int precision
-  } catch (e) {
-    console.error('Tweeting failed')
-    console.error(e)
-  }
+  await sendTweet(message, config)
 }
 
 type TwitterKeys = {
