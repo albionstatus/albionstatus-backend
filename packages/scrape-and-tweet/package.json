@@ -8,7 +8,7 @@
     "url": "https://github.com/albionstatus/albionstatus-backend"
   },
   "scripts": {
-    "scrape": "node --loader ts-node/esm index.ts"
+    "dev": "pnpm wrangler dev --local"
   },
   "author": "Alexander Lichter <npm@lichter.io>",
   "license": "MIT",
