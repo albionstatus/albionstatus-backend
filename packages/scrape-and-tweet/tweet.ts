@@ -45,7 +45,7 @@ export async function sendTweet (tweet: string, keys: TwitterKeys) {
 
   const requestData = {
     url: 'https://api.twitter.com/1.1/statuses/update.json',
-    method: 'GET',
+    method: 'POST',
     data: { status: tweet.slice(0, 235) + '...' },
   };
 
