@@ -46,18 +46,24 @@ export async function sendTweet (tweet: string, keys: TwitterKeys) {
   const requestData = {
     url: 'https://api.twitter.com/1.1/statuses/update.json',
     method: 'POST',
-    data: { status: tweet.slice(0, 235) + '...' },
+    data: { status: `${tweet.slice(0, 235)}${tweet.length > 235 ? '...' : ''}` },
   };
 
-  const response = await $fetch(requestData.url, {
-    headers: {
-      ...oauth.toHeader(oauth.authorize(requestData, oauthToken)),
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams(requestData.data),
-  });
+  try {
+    const response = await $fetch(requestData.url, {
+      headers: {
+        ...oauth.toHeader(oauth.authorize(requestData, oauthToken)),
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams(requestData.data),
+      method: requestData.method
+    });
 
-  return {
-    data: response
+    return {
+      data: response
+    }
+  } catch (e) {
+    console.error('Error during tweeting')
+    console.error(e)
   }
 }
