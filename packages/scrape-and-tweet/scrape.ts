@@ -46,15 +46,26 @@ export async function getCurrentStatus (server: ServerName): Promise<Status> {
 
   try {
     const { status, message } = await $fetch<ServerStatusResponse>(STATUS_URLS[server], { responseType: 'json' })
-    logger.info(`Have current status here: ${status} ${message}`)
+    logger.log(`Have current status here: ${status} ${message}`)
     return {
       type: sanitizeStatus(status) as StatusType,
       message: sanitizeMessage(message)
     }
   } catch (e) {
-    logger.error('Could not fetch current server status')
-    logger.error(e)
-    return FAILING_STATUS
+    const isStatus = typeof e === 'object' && e && 'data' in e
+
+    if (!isStatus) {
+      logger.error('Could not fetch current server status')
+      logger.error(e)
+      return FAILING_STATUS
+    }
+
+    const { status, message } = e.data as ServerStatusResponse
+
+    return {
+      type: sanitizeStatus(status) as StatusType,
+      message: sanitizeMessage(message)
+    }
   }
 }
 

@@ -30,5 +30,6 @@ async function scrapeAndTweet (server: ServerName, env: Env) {
 		return { success: true, message: "Status did not update" }
 	}
 
+	console.log(`Tweeting new status - ${currentStatus.message}`)
 	await tweet({ status: currentStatus, server, env })
 }
