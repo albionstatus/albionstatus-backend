@@ -22,7 +22,7 @@ export async function createDbClient ({ appId: connection, server, apiKey }: Cre
 
   async function getLastStatus (): Promise<Status> {
     try {
-      const result = await collection.findOne({}, { sort: { created_at: -1 } });
+      const result = await collection.findOne({}, { sort: { created_at: -1 }, projection: { '_id': false } });
       if (!result) {
         return {
           type: 'unknown',
@@ -30,8 +30,7 @@ export async function createDbClient ({ appId: connection, server, apiKey }: Cre
           comment: 'booting up',
         }
       }
-      const { _id: _, ...status } = result
-      return status
+      return result
     } catch (e) {
       console.error('Could not fetch current server status')
       console.error(e)
@@ -41,11 +40,11 @@ export async function createDbClient ({ appId: connection, server, apiKey }: Cre
 
   async function getPastStatuses (timestamp: Date): Promise<Status[] | false> {
     try {
-      const result = await collection.find({ created_at: { $gt: timestamp } });
+      const result = await collection.find({ created_at: { $gt: timestamp } }, { projection: { '_id': false } });
       if (!result?.length) {
         return false
       }
-      return result.map(({ _id: _, ...status }) => status)
+      return result
     } catch (e) {
       console.error('Could not fetch current server status')
       console.error(e)
