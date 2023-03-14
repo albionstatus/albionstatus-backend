@@ -11,7 +11,10 @@ type TweetArgs = {
   env: Env
 }
 export const tweet = async ({ status, server, env }: TweetArgs) => {
-  const message = `New server status of Albion ${server}: ${status.type}. #albion${server} Message: ${status.message}`
+  const message = `New server status of Albion ${server}: ${status.type}.
+  Message: ${status.message}
+  
+  #albion${server}`
 
   const config = {
     consumer_key: env.TWITTER_CONSUMER_KEY,
