@@ -4,7 +4,9 @@ export const URLS: {
   STATUS: Record<ServerName, string>
 } = {
   STATUS: {
+    west: 'http://serverstatus.albiononline.com/',
     was: 'http://serverstatus.albiononline.com/',
+    east: 'http://serverstatus-sgp.albiononline.com/',
     sgp: 'http://serverstatus-sgp.albiononline.com/',
     ams: 'http://serverstatus-sgp.albiononline.com/'
   },
@@ -12,7 +14,9 @@ export const URLS: {
 
 export const SERVER_TO_DB: Record<ServerName, string> = {
   was: 'server_west',
+  west: 'server_west',
   sgp: 'server_east',
+  east: 'server_east',
   ams: 'server_ams',
 }
 
