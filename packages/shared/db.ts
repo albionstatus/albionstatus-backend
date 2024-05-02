@@ -1,4 +1,4 @@
-import { FAILING_STATUS } from './constants.js'
+import { FAILING_STATUS, SERVER_TO_DB } from './constants.js'
 import { ServerName, Status } from './types.js'
 import { App, Credentials } from "realm-web";
 
@@ -18,7 +18,7 @@ export async function createDbClient ({ appId: connection, server, apiKey }: Cre
   const credentials = apiKey ? Credentials.apiKey(apiKey) : Credentials.anonymous();
   const user = await app.logIn(credentials);
   const client = user.mongoClient('mongodb-atlas');
-  const collection = client.db('albionstatus').collection<StatusDocument>(`server_${server}`);
+  const collection = client.db('albionstatus').collection<StatusDocument>(SERVER_TO_DB[server]);
 
   async function getLastStatus (): Promise<Status> {
     try {

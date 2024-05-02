@@ -1,10 +1,19 @@
-import type { Status } from './types.js'
+import type { ServerName, Status } from './types.js'
 
-export const URLS = {
+export const URLS: {
+  STATUS: Record<ServerName, string>
+} = {
   STATUS: {
-    west: 'http://serverstatus.albiononline.com/',
-    east: 'http://serverstatus-sgp.albiononline.com/'
-  }
+    was: 'http://serverstatus.albiononline.com/',
+    sgp: 'http://serverstatus-sgp.albiononline.com/',
+    ams: 'http://serverstatus-sgp.albiononline.com/'
+  },
+}
+
+export const SERVER_TO_DB: Record<ServerName, string> = {
+  was: 'server_west',
+  sgp: 'server_east',
+  ams: 'server_ams',
 }
 
 export const HEADERS = {
