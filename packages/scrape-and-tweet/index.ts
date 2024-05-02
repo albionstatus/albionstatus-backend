@@ -1,7 +1,5 @@
 
 import { scrape } from "./scrape.js"
-import { tweet } from "./tweet.js"
-import type { ServerName } from '../shared/types.js'
 import { Env } from "./types.js"
 
 export default {
@@ -11,8 +9,9 @@ export default {
 		ctx: ExecutionContext
 	): Promise<void> {
 		const result = await Promise.allSettled([
-			scrapeAndTweet('east', env),
-			scrapeAndTweet('west', env)
+			scrape('sgp', env),
+			scrape('ams', env),
+			scrape('was', env),
 		])
 
 		if (!result.every(({ status }) => status === 'fulfilled')) {
@@ -20,16 +19,4 @@ export default {
 			console.error(result)
 		}
 	}
-}
-
-async function scrapeAndTweet (server: ServerName, env: Env) {
-	const { didStatusUpdate, currentStatus } = await scrape(server, env)
-
-	if (!didStatusUpdate) {
-		console.log("Status did not update")
-		return { success: true, message: "Status did not update" }
-	}
-
-	console.log(`Tweeting new status - ${currentStatus.message}`)
-	await tweet({ status: currentStatus, server, env })
 }

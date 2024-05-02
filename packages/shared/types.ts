@@ -1,7 +1,5 @@
-import { z } from 'zod'
-
-export const serverNameSchema = z.enum(['east', 'west'])
-export type ServerName = z.infer<typeof serverNameSchema>;
+export const SERVER_NAMES = ['sgp', 'ams', 'was'] as const
+export type ServerName = typeof SERVER_NAMES[number]
 
 export type StatusType = 'online' | 'offline' | 'starting' | 'unknown'
 export type Status = {
