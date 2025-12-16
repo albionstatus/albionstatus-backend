@@ -4,9 +4,9 @@ import { Env } from "./types.js"
 
 export default {
 	async scheduled (
-		controller: ScheduledController,
+		_controller: ScheduledController,
 		env: Env,
-		ctx: ExecutionContext
+		_ctx: ExecutionContext
 	): Promise<void> {
 		const result = await Promise.allSettled([
 			scrape('sgp', env),

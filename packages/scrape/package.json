@@ -1,5 +1,5 @@
 {
-  "name": "@albionstatus/scrape-and-tweet",
+  "name": "@albionstatus/scrape",
   "version": "1.0.0",
   "type": "module",
   "description": "AlbionStatus backend responsible for scraping, tweeting and the API",
@@ -13,19 +13,13 @@
   "author": "Alexander Lichter <npm@lichter.io>",
   "license": "MIT",
   "dependencies": {
-    "consola": "^2.15.3",
-    "twit": "^2.2.11"
+    "consola": "^3.4.2"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20230215.0",
-    "@types/crypto-js": "^4.1.1",
-    "@types/twit": "^2.2.31",
-    "crypto-js": "^4.1.1",
-    "oauth-1.0a": "^2.2.6",
-    "ofetch": "^1.0.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.9.5",
-    "vitest": "^0.28.5",
-    "wrangler": "^2.9.1"
+    "@cloudflare/workers-types": "^4.20251216.0",
+    "ofetch": "^1.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.15",
+    "wrangler": "^4.54.0"
   }
 }

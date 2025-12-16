@@ -1,7 +1,9 @@
-import { defineNitroConfig } from "nitropack";
+import { defineNitroConfig } from "nitro/config";
 
 export default defineNitroConfig({
-  preset: 'cloudflare',
+  serverDir: './',
+  preset: 'cloudflare_module',
+  compatibilityDate: '2025-12-16',
   routeRules: {
     '/**': {
       cors: true,
@@ -11,11 +13,6 @@ export default defineNitroConfig({
   runtimeConfig: {
     // Only used in development
     // CF ENV variable handling used in prod
-    realmAppId: ''
+    mongoDbUri: ''
   },
-  // https://github.com/realm/realm-js/pull/5452
-  replace: {
-    'process.release.name': '""',
-    'process.versions.node': '""'
-  }
 });

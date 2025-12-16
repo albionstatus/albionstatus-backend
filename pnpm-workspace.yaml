@@ -1,2 +1,9 @@
 packages:
-  - 'packages/*'
+  - packages/*
+
+onlyBuiltDependencies:
+  - '@mongodb-js/zstd'
+  - '@parcel/watcher'
+  - esbuild
+  - sharp
+  - workerd

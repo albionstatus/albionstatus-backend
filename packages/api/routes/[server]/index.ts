@@ -1,15 +1,15 @@
 import { createDbClient } from '../../../shared/db.js'
 import type { ServerName } from '../../../shared/types.js'
 
-const { realmAppId: rawAppId } = useRuntimeConfig()
-// @ts-expect-error NITRO_REALM_APP_ID is injected by Cloudflare Workers
-const appId = rawAppId || NITRO_REALM_APP_ID as string
+const { mongoUri: rawMongoUri } = useRuntimeConfig()
+// @ts-expect-error NITRO_MONGODB_URI is injected by Cloudflare Workers
+const mongoUri = rawMongoUri || NITRO_MONGODB_URI as string
 
 export default defineCachedEventHandler(async (event) => {
   const { server } = event.context.params
 
   const { getLastStatus } = await createDbClient({
-    appId,
+    mongoUri,
     server: server as ServerName
   })
 

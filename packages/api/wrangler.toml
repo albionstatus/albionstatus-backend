@@ -3,6 +3,7 @@ main = "./.output/server/index.mjs"
 workers_dev = true
 compatibility_date = "2022-09-10"
 account_id = "1352b1a4f604a54c8862bec20881b0fb"
+compatibility_flags = ["nodejs_compat_v2"]
 
 [site]
 bucket = ".output/public"
@@ -10,4 +11,4 @@ bucket = ".output/public"
 [vars]
 
 # The necessary secrets are:
-# - REALM_APP_ID
+# - MONGODB_URI

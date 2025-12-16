@@ -7,18 +7,20 @@
     "url": "https://github.com/albionstatus/albionstatus-backend"
   },
   "scripts": {
+    "build": "nitro build",
     "dev": "nitro dev",
-    "build": "nitro build"
+    "preview": "npx srvx --prod .output/"
   },
   "author": "Alexander Lichter <npm@lichter.io>",
   "license": "MIT",
   "devDependencies": {
-    "date-fns": "^2.29.3",
-    "ofetch": "^1.0.0",
-    "wrangler": "^2.9.1",
-    "zod": "^3.20.6"
+    "date-fns": "^4.1.0",
+    "ofetch": "^1.5.1",
+    "wrangler": "^4.54.0",
+    "zod": "^4.2.1"
   },
   "dependencies": {
-    "nitropack": "^2.2.2"
+    "nitro": "3.0.1-alpha.1",
+    "rolldown": "1.0.0-beta.54"
   }
 }

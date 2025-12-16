@@ -9,8 +9,8 @@
   "author": "Alexander Lichter <npm@lichter.io>",
   "license": "MIT",
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20230215.0",
-    "typescript": "^4.9.5",
-    "vitest": "^0.28.5"
+    "@cloudflare/workers-types": "^4.20251216.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.15"
   }
 }
