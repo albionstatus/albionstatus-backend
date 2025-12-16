@@ -1,13 +1,18 @@
+import { HTTPError } from 'nitro/h3'
 import { createDbClient } from '../../../../shared/db.js'
 import type { ServerName } from '../../../../shared/types.js'
 import { subDays } from 'date-fns'
-
-const { mongoDbUri: rawMongoUri } = useRuntimeConfig()
+import { validateServer } from '../../../utils/server.js'
+import { useRuntimeConfig } from "nitro/runtime-config";
+import { defineCachedHandler } from 'nitro/cache'
+const { mongodbUri: rawMongoUri } = useRuntimeConfig()
 // @ts-expect-error MONGODB_URI is injected by Cloudflare Workers
 const mongoUri = rawMongoUri || MONGODB_URI as string
 
-export default defineCachedEventHandler(async (event) => {
+export default defineCachedHandler(async (event) => {
   const { server } = event.context.params
+
+  validateServer(server)
 
   const timestamp = subDays(new Date(), 1)
 
@@ -18,7 +23,7 @@ export default defineCachedEventHandler(async (event) => {
 
   const result = await getPastStatuses(new Date(timestamp))
   if (!result) {
-    throw createError({
+    throw new HTTPError({
       message: 'No past statuses found',
       statusCode: 400
     })

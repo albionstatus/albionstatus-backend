@@ -24,6 +24,6 @@ export default defineNitroConfig({
   runtimeConfig: {
     // Only used in development
     // CF ENV variable handling used in prod
-    mongoDbUri: ''
+    mongodbUri: ''
   },
 });
