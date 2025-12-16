@@ -5,14 +5,16 @@ import { subDays } from 'date-fns'
 import { validateServer } from '../../../utils/server.js'
 import { useRuntimeConfig } from "nitro/runtime-config";
 import { defineCachedHandler } from 'nitro/cache'
-const { mongodbUri: rawMongoUri } = useRuntimeConfig()
-// @ts-expect-error MONGODB_URI is injected by Cloudflare Workers
-const mongoUri = rawMongoUri || MONGODB_URI as string
 
 export default defineCachedHandler(async (event) => {
   const { server } = event.context.params
 
   validateServer(server)
+
+  const { mongodbUri: rawMongoUri } = useRuntimeConfig()
+  // @ts-expect-error MONGODB_URI is injected by Cloudflare Workers
+  const mongoUri = rawMongoUri || process.env.NITRO_MONGODB_URI
+
 
   const timestamp = subDays(new Date(), 1)
 

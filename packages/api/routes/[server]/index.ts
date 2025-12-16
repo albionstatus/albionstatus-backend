@@ -5,15 +5,16 @@ import { defineCachedHandler } from "nitro/cache";
 import { useRuntimeConfig } from "nitro/runtime-config";
 import { validateServer } from "../../utils/server.js";
 
-const { mongodbUri: rawMongoUri } = useRuntimeConfig();
-console.log({rawMongoUri});
-// @ts-expect-error NITRO_MONGODB_URI is injected by Cloudflare Workers
-const mongoUri = rawMongoUri || (NITRO_MONGODB_URI as string);
 export default defineCachedHandler(
   async (event) => {
     const { server } = event.context.params;
+  
+    validateServer(server);
 
-    validateServer(server)
+    const { mongodbUri: rawMongoUri } = useRuntimeConfig();
+    // @ts-expect-error NITRO_MONGODB_URI is injected by Cloudflare Workers
+    const mongoUri = rawMongoUri || process.env.NITRO_MONGODB_URI
+
 
     const { getLastStatus } = await createDbClient({
       mongoUri,
