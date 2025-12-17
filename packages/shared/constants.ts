@@ -6,7 +6,7 @@ export const URLS: {
   STATUS: {
     was: 'http://serverstatus.albiononline.com/',
     sgp: 'http://serverstatus-sgp.albiononline.com/',
-    ams: 'http://serverstatus-sgp.albiononline.com/'
+    ams: 'http://serverstatus-ams.albiononline.com/'
   },
 }
 
