@@ -20,7 +20,11 @@ async function getMongoDb(mongoUri: string): Promise<Db> {
   }
   
   if (!cachedClient) {
-    cachedClient = new MongoClient(mongoUri)
+    cachedClient = new MongoClient(mongoUri, {
+      maxPoolSize: 1,
+      minPoolSize: 0,
+      serverSelectionTimeoutMS: 5000,
+    })
     await cachedClient.connect()
   }
   
@@ -36,6 +40,7 @@ export async function createDbClient ({ mongoUri, server }: CreateDbClientArgs) 
     try {
       const result = await collection.findOne({}, { sort: { created_at: -1 }, projection: { '_id': false } });
       if (!result) {
+        console.log('No result found')
         return {
           type: 'unknown',
           message: 'No entries yet, the bot is probably booting up',
@@ -79,10 +84,19 @@ export async function createDbClient ({ mongoUri, server }: CreateDbClientArgs) 
     await collection.insertOne({ ...status, created_at: date } as OptionalUnlessRequiredId<StatusDocument>);
   }
 
+  async function closeConnection () {
+    if (cachedClient) {
+      await cachedClient.close()
+      cachedClient = null
+      cachedDb = null
+    }
+  }
+
   return {
     getLastStatus,
     getPastStatuses,
-    insertStatus
+    insertStatus,
+    closeConnection
   }
 }
 

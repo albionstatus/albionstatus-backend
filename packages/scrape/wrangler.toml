@@ -9,6 +9,5 @@ compatibility_flags = ["nodejs_compat"]
 crons = [ "* * * * *" ]
 
 [vars]
-
 # Needed secrets are
 # - MONGODB_URI

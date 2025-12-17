@@ -15,8 +15,7 @@ export default defineCachedHandler(
     // @ts-expect-error NITRO_MONGODB_URI is injected by Cloudflare Workers
     const mongoUri = rawMongoUri || process.env.NITRO_MONGODB_URI
 
-
-    const { getLastStatus } = await createDbClient({
+    const { getLastStatus, closeConnection } = await createDbClient({
       mongoUri,
       server: server as ServerName,
     });
@@ -31,6 +30,8 @@ export default defineCachedHandler(
         status: 500,
         message: "Could not get last status",
       });
+    } finally {
+      event.waitUntil(closeConnection())
     }
   },
   {

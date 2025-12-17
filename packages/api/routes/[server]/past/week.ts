@@ -17,7 +17,7 @@ export default defineCachedHandler(async (event) => {
 
   const timestamp = subWeeks(new Date(), 1)
 
-  const { getPastStatuses } = await createDbClient({
+  const { getPastStatuses, closeConnection } = await createDbClient({
     mongoUri,
     server: server as ServerName
   })
@@ -29,6 +29,8 @@ export default defineCachedHandler(async (event) => {
       status: 400
     })
   }
+
+  event.waitUntil(closeConnection())
 
   return result
 }, {

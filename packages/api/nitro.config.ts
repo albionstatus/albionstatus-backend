@@ -28,4 +28,19 @@ export default defineNitroConfig({
     // CF ENV variable handling used in prod
     mongodbUri: ''
   },
+  rollupConfig: {
+    // @ts-expect-error Rolldown-specific config
+    platform: 'node',
+  }
+  // THIS NEEDS PATCHES AFTER OUTPUT.
+  // Rolldown runtime patch:
+  // var __require = /* @__PURE__ */ (id, ...args) => {
+  //   if(id === 'process') {
+  //     return id
+  //   }
+  //   return r(id, ...args);
+  // }
+
+  // Then, in libs/_mongodb replace "= process.env;" with "= process.env ?? {};"
+  // Then deploy!
 });
