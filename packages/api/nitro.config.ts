@@ -3,7 +3,6 @@ import { defineNitroConfig } from "nitro/config";
 const COMPAT_DATE = '2025-12-16';
 
 export default defineNitroConfig({
-  errorHandler: './error.ts',
   serverDir: './',
   preset: 'cloudflare_module',
   compatibilityDate: COMPAT_DATE,
@@ -34,6 +33,7 @@ export default defineNitroConfig({
   }
   // THIS NEEDS PATCHES AFTER OUTPUT.
   // Rolldown runtime patch:
+  // const r = createRequire('file://')
   // var __require = /* @__PURE__ */ (id, ...args) => {
   //   if(id === 'process') {
   //     return id
