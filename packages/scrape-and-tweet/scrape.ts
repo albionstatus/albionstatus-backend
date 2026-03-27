@@ -1,89 +1,90 @@
-import { ServerName, Status, StatusType } from "../shared/types.js"
-import { createDbClient } from "../shared/db.js"
-import { $fetch } from "ofetch"
-import consola from 'consola'
-import { FAILING_STATUS, MESSAGES, TIMEOUT_INDICATORS } from "../shared/constants.js"
-import { STATUS_URLS } from "./constants.js"
-import type { Env } from "./types.js"
+import { ServerName, Status, StatusType } from "../shared/types.js";
+import { createDbClient } from "../shared/db.js";
+import { $fetch } from "ofetch";
+import consola from "consola";
+import { FAILING_STATUS, MESSAGES, TIMEOUT_INDICATORS } from "../shared/constants.js";
+import { STATUS_URLS } from "./constants.js";
+import type { Env } from "./types.js";
 
-export async function scrape (server: ServerName, env: Env) {
-  const logger = consola.withScope(`scraper-${server}`)
-  logger.info(`Start scraping`)
+export async function scrape(server: ServerName, env: Env) {
+  const logger = consola.withScope(`scraper-${server}`);
+  logger.info(`Start scraping`);
   const { insertStatus, getLastStatus } = await createDbClient({
     appId: env.REALM_APP_ID,
     apiKey: env.REALM_API_KEY,
-    server
-  })
+    server,
+  });
 
   const [currentStatus, lastStatus] = await Promise.all([
     getCurrentStatus(server),
-    getLastStatus()
-  ])
+    getLastStatus(),
+  ]);
 
-  await insertStatus(currentStatus)
-  logger.info('Inserted status')
+  await insertStatus(currentStatus);
+  logger.info("Inserted status");
 
-
-  const didStatusUpdate = areStatusesDifferent(currentStatus, lastStatus)
-  return { didStatusUpdate, currentStatus }
+  const didStatusUpdate = areStatusesDifferent(currentStatus, lastStatus);
+  return { didStatusUpdate, currentStatus };
 }
 
-function areStatusesDifferent (currentStatus: Status, lastStatus?: Status) {
+function areStatusesDifferent(currentStatus: Status, lastStatus?: Status) {
   if (!lastStatus) {
-    return false
+    return false;
   }
 
-  return JSON.stringify(currentStatus) !== JSON.stringify(lastStatus)
+  return JSON.stringify(currentStatus) !== JSON.stringify(lastStatus);
 }
 
 type ServerStatusResponse = {
-  status: string
-  message: string
-}
+  status: string;
+  message: string;
+};
 
-export async function getCurrentStatus (server: ServerName): Promise<Status> {
-  const logger = consola.withScope(`scraper-${server}`)
+export async function getCurrentStatus(server: ServerName): Promise<Status> {
+  const logger = consola.withScope(`scraper-${server}`);
 
   try {
-    const { status, message } = await $fetch<ServerStatusResponse>(STATUS_URLS[server], { responseType: 'json' })
-    logger.log(`Have current status here: ${status} ${message}`)
+    const { status, message } = await $fetch<ServerStatusResponse>(STATUS_URLS[server], {
+      responseType: "json",
+    });
+    logger.log(`Have current status here: ${status} ${message}`);
     return {
       type: sanitizeStatus(status) as StatusType,
-      message: sanitizeMessage(message)
-    }
+      message: sanitizeMessage(message),
+    };
   } catch (e) {
-    const isStatus = typeof e === 'object' && e && 'data' in e
+    const isStatus = typeof e === "object" && e && "data" in e;
 
     if (!isStatus) {
-      logger.error('Could not fetch current server status')
-      logger.error(e)
-      return FAILING_STATUS
+      logger.error("Could not fetch current server status");
+      logger.error(e);
+      return FAILING_STATUS;
     }
 
-    const { status, message } = e.data as ServerStatusResponse
+    const { status, message } = e.data as ServerStatusResponse;
 
     return {
       type: sanitizeStatus(status) as StatusType,
-      message: sanitizeMessage(message)
-    }
+      message: sanitizeMessage(message),
+    };
   }
 }
 
-function sanitizeStatus (status: string) {
-  const STATUS_OFFLINE_VALUES = [500, '500']
+function sanitizeStatus(status: string) {
+  const STATUS_OFFLINE_VALUES = [500, "500"];
 
-  return STATUS_OFFLINE_VALUES.includes(status) ? 'offline' : status
+  return STATUS_OFFLINE_VALUES.includes(status) ? "offline" : status;
 }
 
-function sanitizeMessage (rawMessage: string) {
-  const lowerMessage = rawMessage.toLowerCase()
+function sanitizeMessage(rawMessage: string) {
+  const lowerMessage = rawMessage.toLowerCase();
 
-  const isOnline = lowerMessage.includes('is online')
+  const isOnline = lowerMessage.includes("is online");
 
   if (isOnline) {
-    return lowerMessage
+    return lowerMessage;
   }
 
-  const isTimeout = TIMEOUT_INDICATORS.some(s => lowerMessage.includes(s))
-  return isTimeout ? MESSAGES.timeout : lowerMessage
+  const isTimeout = TIMEOUT_INDICATORS.some((s) => lowerMessage.includes(s));
+  return isTimeout ? MESSAGES.timeout : lowerMessage;
 }

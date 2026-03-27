@@ -1,21 +1,21 @@
 import { defineNitroConfig } from "nitropack";
 
 export default defineNitroConfig({
-  preset: 'cloudflare',
+  preset: "cloudflare",
   routeRules: {
-    '/**': {
+    "/**": {
       cors: true,
-      headers: { 'access-control-allow-methods': 'GET' }
-    }
+      headers: { "access-control-allow-methods": "GET" },
+    },
   },
   runtimeConfig: {
     // Only used in development
     // CF ENV variable handling used in prod
-    realmAppId: ''
+    realmAppId: "",
   },
   // https://github.com/realm/realm-js/pull/5452
   replace: {
-    'process.release.name': '""',
-    'process.versions.node': '""'
-  }
+    "process.release.name": '""',
+    "process.versions.node": '""',
+  },
 });

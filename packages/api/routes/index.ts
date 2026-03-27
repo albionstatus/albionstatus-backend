@@ -1,3 +1,3 @@
 export default defineEventHandler(() => ({
-  message: 'This API works!'
-}))
+  message: "This API works!",
+}));

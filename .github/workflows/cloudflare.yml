@@ -17,7 +17,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          node-version: "18.x"
           cache: pnpm
 
       - name: Install dependencies
@@ -29,12 +29,11 @@ jobs:
       - name: Publish API to Cloudflare
         uses: cloudflare/wrangler-action@2.0.0
         with:
-          workingDirectory: 'packages/api'
+          workingDirectory: "packages/api"
           apiToken: ${{ secrets.CF_API_TOKEN }}
 
       - name: Publish Scraper to Cloudflare
         uses: cloudflare/wrangler-action@2.0.0
         with:
-          workingDirectory: 'packages/scrape-and-tweet'
+          workingDirectory: "packages/scrape-and-tweet"
           apiToken: ${{ secrets.CF_API_TOKEN }}
-    
