@@ -1,0 +1,6 @@
+{
+  "extends": "./.void/tsconfig.json",
+  "compilerOptions": {
+    "types": ["void/env"]
+  }
+}

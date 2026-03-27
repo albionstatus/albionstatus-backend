@@ -1,16 +1,13 @@
 import type { ServerName, Status } from "./types.js";
 
-export const URLS: {
-  STATUS: Record<ServerName, string>;
-} = {
-  STATUS: {
-    west: "http://serverstatus.albiononline.com/",
-    was: "http://serverstatus.albiononline.com/",
-    east: "http://serverstatus-sgp.albiononline.com/",
-    sgp: "http://serverstatus-sgp.albiononline.com/",
-    ams: "http://serverstatus-sgp.albiononline.com/",
-  },
-};
+export const STATUS_URLS: Record<ServerName, string> = {
+  sgp: "https://serverstatus-sgp.albiononline.com/",
+  ams: "https://serverstatus-ams.albiononline.com/",
+  was: "https://serverstatus.albiononline.com/",
+  // Legacy
+  east: "https://serverstatus-ams.albiononline.com/",
+  west: "https://serverstatus.albiononline.com/",
+} as const;
 
 export const SERVER_TO_DB: Record<ServerName, string> = {
   was: "server_west",
@@ -20,9 +17,6 @@ export const SERVER_TO_DB: Record<ServerName, string> = {
   ams: "server_ams",
 };
 
-export const HEADERS = {
-  "User-Agent": `AlbionStatus Bot @ albionstatus.com`,
-};
 export const FAILING_STATUS: Status = {
   type: "unknown",
   message: "AlbionStatus couldn't fetch status. Likely there is a maintenance going on",

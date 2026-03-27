@@ -2,9 +2,13 @@
 node_modules
 jspm_packages
 
-# Nitro
+# Nitro (legacy)
 nitro.d.ts
 .nitro
+
+# Void
+.void
+.wrangler
 
 package-lock.json
 
@@ -63,6 +67,8 @@ Temporary Items
 .vercel_build_output
 .build-*
 .env
+.env.local
+.env.*.local
 .netlify
 .vercel
 staticwebapp.config.json

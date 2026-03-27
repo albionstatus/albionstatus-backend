@@ -1,21 +1,32 @@
 {
   "name": "albionstatus-backend",
   "version": "1.0.0",
-  "description": "AlbionStatus backend responsible for scraping, tweeting and the API",
+  "description": "AlbionStatus backend responsible for scraping and the API",
   "license": "MIT",
   "author": "Alexander Lichter <npm@lichter.io>",
   "repository": {
     "type": "git",
     "url": "https://github.com/albionstatus/albionstatus-backend"
   },
+  "type": "module",
   "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "check": "vp check",
+    "test": "vp test",
     "prepare": "vp config"
   },
+  "dependencies": {
+    "consola": "^3.4.2",
+    "date-fns": "^4.1.0",
+    "hono": "^4.7.10",
+    "ofetch": "^1.4.1"
+  },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260317.1",
     "typescript": "^6.0.2",
     "vite-plus": "catalog:",
-    "vitest": "catalog:"
+    "vitest": "catalog:",
+    "void": "link:../void/packages/void"
   },
   "packageManager": "pnpm@10.33.0"
 }

@@ -1,26 +1,19 @@
-import { ServerName, Status, StatusType } from "../shared/types.js";
-import { createDbClient } from "../shared/db.js";
+import type { ServerName, Status, StatusType } from "./types.js";
+import { getLastStatus, insertStatus } from "./db.js";
 import { $fetch } from "ofetch";
 import consola from "consola";
-import { FAILING_STATUS, MESSAGES, TIMEOUT_INDICATORS } from "../shared/constants.js";
-import { STATUS_URLS } from "./constants.js";
-import type { Env } from "./types.js";
+import { FAILING_STATUS, MESSAGES, TIMEOUT_INDICATORS, STATUS_URLS } from "./constants.js";
 
-export async function scrape(server: ServerName, env: Env) {
-  const logger = consola.withScope(`scraper-${server}`);
+export async function scrape(server: ServerName) {
+  const logger = consola.withTag(`scraper-${server}`);
   logger.info(`Start scraping`);
-  const { insertStatus, getLastStatus } = await createDbClient({
-    appId: env.REALM_APP_ID,
-    apiKey: env.REALM_API_KEY,
-    server,
-  });
 
   const [currentStatus, lastStatus] = await Promise.all([
     getCurrentStatus(server),
-    getLastStatus(),
+    getLastStatus(server),
   ]);
 
-  await insertStatus(currentStatus);
+  await insertStatus(server, currentStatus);
   logger.info("Inserted status");
 
   const didStatusUpdate = areStatusesDifferent(currentStatus, lastStatus);
@@ -41,7 +34,7 @@ type ServerStatusResponse = {
 };
 
 export async function getCurrentStatus(server: ServerName): Promise<Status> {
-  const logger = consola.withScope(`scraper-${server}`);
+  const logger = consola.withTag(`scraper-${server}`);
 
   try {
     const { status, message } = await $fetch<ServerStatusResponse>(STATUS_URLS[server], {
