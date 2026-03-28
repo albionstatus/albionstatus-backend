@@ -1,8 +1,10 @@
 import { defineConfig } from "vite-plus";
 import { voidPlugin } from "void";
+import { voidVue } from "@void/vue/plugin";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  plugins: [voidPlugin()],
+  plugins: [voidPlugin(), voidVue(), tailwindcss()],
   staged: {
     "*": "vp check --fix",
   },

@@ -1,8 +1,8 @@
 import { defineHandler } from "void";
 import { subDays } from "date-fns";
-import { SERVER_NAMES } from "../../../src/types.js";
-import type { ServerName } from "../../../src/types.js";
-import { getPastStatuses } from "../../../src/db.js";
+import { SERVER_NAMES } from "../../../../src/types.js";
+import type { ServerName } from "../../../../src/types.js";
+import { getPastStatuses } from "../../../../src/db.js";
 
 export const GET = defineHandler(async (c) => {
   const server = c.req.param("server");
